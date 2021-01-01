@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+
+const GITHUB_URL = 'https://api.github.com/users/rafamatoso/repos';
 
 interface User {
   name: 'string';
@@ -7,21 +9,23 @@ interface User {
 }
 
 const App: React.FC = () => {
-  const [user, setUser] = useState<User>();
+  const [users, setUsers] = useState<User[]>();
 
   async function loadData() {
-    const response = await fetch('https://api.github.com/users/rafamatoso');
+    const response = await fetch(GITHUB_URL);
     const data = await response.json();
 
-    setUser(data);
+    setUsers(data);
   }
 
   useEffect(() => {
     loadData();
-  }, [user]);
+  }, []);
+
+  const repoNames = useMemo(() => users?.map((user) => user.name).join(', '), [users]);
 
   return (
-    <h1>{user?.name}</h1>
+    <h1>{repoNames}</h1>
   );
 };
 
