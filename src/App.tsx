@@ -1,6 +1,7 @@
 import {
   useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
+import AppContext from './AppContext';
 
 const GITHUB_URL = 'https://api.github.com/users/rafamatoso/repos';
 
@@ -48,6 +49,11 @@ const App: React.FC = () => {
       <form action="">
         <input type="text" ref={inputRef} />
       </form>
+
+      <hr />
+
+      <h2>useContext</h2>
+      <AppContext />
     </>
   );
 };
