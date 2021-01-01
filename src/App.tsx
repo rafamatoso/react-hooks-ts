@@ -1,31 +1,44 @@
-import { useEffect, useMemo, useState } from 'react';
+import {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 
 const GITHUB_URL = 'https://api.github.com/users/rafamatoso/repos';
 
-interface User {
+interface Repos {
   name: 'string';
-  login: 'string';
-  avatarUrl: 'string';
 }
 
 const App: React.FC = () => {
-  const [users, setUsers] = useState<User[]>();
+  const [repos, setRepos] = useState<Repos[]>();
 
   async function loadData() {
     const response = await fetch(GITHUB_URL);
     const data = await response.json();
 
-    setUsers(data);
+    setRepos(data);
   }
 
   useEffect(() => {
     loadData();
   }, []);
 
-  const repoNames = useMemo(() => users?.map((user) => user.name).join(', '), [users]);
+  const repoNames = useMemo(() => repos?.map((repo) => repo.name).join(', '), [repos]);
+
+  const doCallback = useCallback(() => repos?.map((repo) => repo.name).join(', '), [repos]);
 
   return (
-    <h1>{repoNames}</h1>
+    <>
+      <h2>useState, useEffect e useMemo</h2>
+      <p>{repoNames}</p>
+
+      <hr />
+
+      <h2>useCallback</h2>
+      <button type="button" onClick={() => doCallback()}>Executar callBack</button>
+
+      <hr />
+
+    </>
   );
 };
 
