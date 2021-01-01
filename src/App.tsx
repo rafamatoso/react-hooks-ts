@@ -1,5 +1,5 @@
 import {
-  useCallback, useEffect, useMemo, useState,
+  useCallback, useEffect, useMemo, useRef, useState,
 } from 'react';
 
 const GITHUB_URL = 'https://api.github.com/users/rafamatoso/repos';
@@ -10,6 +10,8 @@ interface Repos {
 
 const App: React.FC = () => {
   const [repos, setRepos] = useState<Repos[]>();
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   async function loadData() {
     const response = await fetch(GITHUB_URL);
@@ -24,7 +26,11 @@ const App: React.FC = () => {
 
   const repoNames = useMemo(() => repos?.map((repo) => repo.name).join(', '), [repos]);
 
-  const doCallback = useCallback(() => repos?.map((repo) => repo.name).join(', '), [repos]);
+  const doCallback = useCallback(() => {
+    repos?.map((repo) => repo.name).join(', ');
+  }, [repos]);
+
+  inputRef.current?.focus();
 
   return (
     <>
@@ -38,6 +44,10 @@ const App: React.FC = () => {
 
       <hr />
 
+      <h2>useRef</h2>
+      <form action="">
+        <input type="text" ref={inputRef} />
+      </form>
     </>
   );
 };
