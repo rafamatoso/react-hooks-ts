@@ -25,11 +25,15 @@ const App: React.FC = () => {
     loadData();
   }, []);
 
-  const repoNames = useMemo(() => repos?.map((repo) => repo.name).join(', '), [repos]);
+  const repoNames = useMemo(() => {
+    console.log('useMemo funcionou');
+
+    return repos?.map((repo) => repo.name).join(', ');
+  }, [repos]);
 
   const doCallback = useCallback(() => {
-    repos?.map((repo) => repo.name).join(', ');
-  }, [repos]);
+    alert('useCallback funcionou');
+  }, []);
 
   inputRef.current?.focus();
 
